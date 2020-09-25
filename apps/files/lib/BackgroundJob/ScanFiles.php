@@ -105,7 +105,8 @@ class ScanFiles extends \OC\BackgroundJob\TimedJob {
 			->from('filecache', 'f')
 			->innerJoin('f', 'mounts', 'm', $query->expr()->eq('storage_id', 'storage'))
 			->where($query->expr()->lt('size', $query->createNamedParameter(0, IQueryBuilder::PARAM_INT)))
-			->groupBy('storage_id');
+			->groupBy('storage_id')
+			->setMaxResults(self::USERS_PER_SESSION);
 
 		return $query->execute()->fetchAll(\PDO::FETCH_COLUMN);
 	}

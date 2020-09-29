@@ -918,10 +918,11 @@ class Trashbin {
 		$view = new View('/' . $user . '/files_trashbin/versions');
 		$versions = [];
 
+		/** @var \OC\Files\Storage\Storage $storage */
+		[$storage,] = $view->resolvePath('/');
+
 		//force rescan of versions, local storage may not have updated the cache
 		if (!self::$scannedVersions) {
-			/** @var \OC\Files\Storage\Storage $storage */
-			[$storage,] = $view->resolvePath('/');
 			$storage->getScanner()->scan('files_trashbin/versions');
 			self::$scannedVersions = true;
 		}
@@ -961,11 +962,10 @@ class Trashbin {
 			foreach ($matches as $ma) {
 				if ($timestamp) {
 					$parts = explode('.v', substr($ma['path'], 0, $offset));
-					$versions[] = end($parts);
 				} else {
 					$parts = explode('.v', $ma['path']);
-					$versions[] = end($parts);
 				}
+				$versions[] = end($parts);
 			}
 		}
 		return $versions;

@@ -3704,9 +3704,15 @@
 					id: tabView.id, 
 					name: tabView.getLabel(),
 					icon: tabView.getIcon(),
-					render: function(el, fileInfo) {
+					mount: function(el, fileInfo) {
 						tabView.setFileInfo(fileInfo)
 						el.appendChild(tabView.el)
+					},
+					update: function(fileInfo) {
+						tabView.setFileInfo(fileInfo)
+					},
+					destroy: function() {
+						tabView.el.remove()
 					},
 					enabled,
 				}))
